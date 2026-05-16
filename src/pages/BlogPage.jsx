@@ -28,6 +28,9 @@ export default function BlogPage() {
     .filter(p => p.location)
     .map(p => p.location);
 
+  const hasMap = locations.length > 0;
+  const paragraphImages = blog.paragraphs.filter(p => p.image);
+
   function handleNodeClick(loc) {
     const para = blog.paragraphs.find(p => p.location && p.location.name === loc.name);
     if (para && paragraphRefs.current[para.id]) {
@@ -59,7 +62,7 @@ export default function BlogPage() {
           </button>
         </div>
 
-        {/* Row 1: Content + Map */}
+        {/* Row 1: Content + right column */}
         <div className="blog-page__body">
           <div className="blog-page__content">
             {blog.paragraphs.map(p => (
@@ -72,13 +75,41 @@ export default function BlogPage() {
                 {p.location && (
                   <span className="blog-page__para-location">📍 {p.location.name}</span>
                 )}
+                {/* When no map: float image right within paragraph */}
+                {p.image && !hasMap && (
+                  <img
+                    src={p.image}
+                    alt={p.heading || ""}
+                    className="blog-page__para-img-float"
+                  />
+                )}
                 <p className="blog-page__para-body">{p.body}</p>
               </div>
             ))}
           </div>
-          {locations.length > 0 && (
-            <div className="blog-page__map-wrap">
-              <TravelMap locations={locations} onNodeClick={handleNodeClick} />
+
+          {/* Right column: map + paragraph images stacked below */}
+          {hasMap && (
+            <div className="blog-page__right-col">
+              <div className="blog-page__map-sticky">
+                <TravelMap locations={locations} onNodeClick={handleNodeClick} />
+              </div>
+              {paragraphImages.length > 0 && (
+                <div className="blog-page__right-images">
+                  {paragraphImages.map(p => (
+                    <div key={p.id} className="blog-page__right-image-block">
+                      {p.heading && (
+                        <span className="blog-page__right-image-label">{p.heading}</span>
+                      )}
+                      <img
+                        src={p.image}
+                        alt={p.heading || ""}
+                        className="blog-page__right-image"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
