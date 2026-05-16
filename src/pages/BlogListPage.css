@@ -1,0 +1,18 @@
+.list-page {
+  padding: 2.5rem 2.5rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.list-page__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 1.8rem;
+}
+
+.list-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+}

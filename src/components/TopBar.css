@@ -1,0 +1,77 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #e85d04;
+  padding: 0 2rem;
+  height: 56px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.topbar-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: -0.5px;
+  user-select: none;
+}
+
+.topbar-username {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.topbar-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.topbar-signin {
+  background: #fff;
+  color: #e85d04;
+}
+
+.topbar-signin:hover {
+  background: #ffe5d0;
+}
+
+.topbar-create {
+  background: #fff;
+  color: #e85d04;
+}
+
+.topbar-create:hover {
+  background: #ffe5d0;
+}
+
+.topbar-logout {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.5);
+}
+
+.topbar-logout:hover {
+  background: rgba(255,255,255,0.3);
+}

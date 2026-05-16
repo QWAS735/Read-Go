@@ -1,0 +1,87 @@
+.pinmap-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.pinmap-box {
+  background: #fff;
+  border-radius: 14px;
+  width: 640px;
+  max-width: 96vw;
+  padding: 1rem;
+  position: relative;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pinmap-close {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #555;
+  z-index: 10;
+  line-height: 1;
+}
+
+.pinmap-close:hover {
+  color: #e85d04;
+}
+
+.pinmap-hint {
+  text-align: center;
+  font-size: 0.82rem;
+  color: #888;
+  margin: 0 0 0.2rem;
+  padding-top: 0.2rem;
+}
+
+.pinmap-map {
+  width: 100%;
+  height: 420px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pinmap-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pinmap-coords {
+  font-size: 0.8rem;
+  color: #888;
+  font-family: monospace;
+}
+
+.pinmap-save {
+  background: #e85d04;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.pinmap-save:hover:not(:disabled) {
+  background: #c94d00;
+}
+
+.pinmap-save:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

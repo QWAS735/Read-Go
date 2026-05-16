@@ -1,0 +1,318 @@
+.creation-tool {
+  padding: 2rem 2.5rem 4rem;
+  background: #f8f8f8;
+  min-height: calc(100vh - 56px);
+}
+
+.creation-tool__inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.creation-tool__toprow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.creation-tool__back {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.18s;
+}
+
+.creation-tool__back:hover {
+  color: #e85d04;
+}
+
+.creation-tool__publish {
+  background: #e85d04;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.creation-tool__publish:hover {
+  background: #c94d00;
+}
+
+/* Title input */
+.creation-tool__title-input {
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 800;
+  border: none;
+  border-bottom: 2.5px solid #e85d04;
+  outline: none;
+  background: transparent;
+  color: #1a1a1a;
+  padding: 0.3rem 0;
+  margin-bottom: 2rem;
+  font-family: inherit;
+}
+
+.creation-tool__title-input::placeholder {
+  color: #ccc;
+}
+
+/* Paragraphs list */
+.creation-tool__paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Paragraph cards */
+.para-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.para-card__drag-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.para-card__move-btn {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  color: #888;
+  padding: 0.1rem 0.4rem;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.para-card__move-btn:hover:not(:disabled) {
+  border-color: #e85d04;
+  color: #e85d04;
+}
+
+.para-card__move-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.para-card__order {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin: 0 0.25rem;
+}
+
+/* Saved (collapsed) state */
+.para-card--saved .para-card__preview {
+  padding: 0.85rem 3rem 0.85rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.para-card--saved .para-card__preview:hover {
+  background: #fff5ef;
+}
+
+.para-card__preview-heading {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.para-card__preview-loc {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: #e85d04;
+  font-weight: 600;
+  background: #fff5ef;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  margin-bottom: 0.4rem;
+}
+
+.para-card__preview-body {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.para-card__delete {
+  position: absolute;
+  top: 2.4rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+  padding: 0;
+}
+
+.para-card__delete:hover {
+  color: #d32f2f;
+}
+
+/* Editing state */
+.para-card--editing {
+  border: 2px solid #e85d04;
+}
+
+.para-card__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.para-card__heading-input {
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-bottom: 1.5px solid #e0e0e0;
+  outline: none;
+  padding: 0.3rem 0;
+  font-family: inherit;
+  color: #1a1a1a;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.para-card__heading-input:focus {
+  border-bottom-color: #e85d04;
+}
+
+.para-card__heading-input::placeholder {
+  color: #ccc;
+  font-weight: 400;
+}
+
+.para-card__body-input {
+  width: 100%;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.93rem;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.18s;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.para-card__body-input:focus {
+  border-color: #e85d04;
+}
+
+.para-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.para-card__cancel {
+  background: none;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 0.45rem 1rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: #555;
+  transition: border-color 0.15s;
+}
+
+.para-card__cancel:hover {
+  border-color: #aaa;
+}
+
+.para-card__save {
+  background: #e85d04;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1.2rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.para-card__save:hover {
+  background: #c94d00;
+}
+
+/* Add paragraph button */
+.creation-tool__add-para {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #fff;
+  border: 2.5px dashed #e85d04;
+  border-radius: 12px;
+  padding: 1.4rem;
+  cursor: pointer;
+  color: #e85d04;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.18s;
+}
+
+.creation-tool__add-para:hover:not(:disabled) {
+  background: #fff5ef;
+}
+
+.creation-tool__add-para--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.creation-tool__add-plus {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.creation-tool__preview-link {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.creation-tool__preview-btn {
+  background: none;
+  border: 1.5px solid #e85d04;
+  color: #e85d04;
+  border-radius: 8px;
+  padding: 0.5rem 1.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.creation-tool__preview-btn:hover {
+  background: #e85d04;
+  color: #fff;
+}
