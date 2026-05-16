@@ -1,15 +1,13 @@
-import { MOCK_BLOGS, MOCK_USERS } from "./mockData";
-
 const BLOGS_KEY = "readgo_blogs";
 const USERS_KEY = "readgo_users";
 const SESSION_KEY = "readgo_session";
 
 function initStorage() {
   if (!localStorage.getItem(BLOGS_KEY)) {
-    localStorage.setItem(BLOGS_KEY, JSON.stringify(MOCK_BLOGS));
+    localStorage.setItem(BLOGS_KEY, JSON.stringify([]));
   }
   if (!localStorage.getItem(USERS_KEY)) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(MOCK_USERS));
+    localStorage.setItem(USERS_KEY, JSON.stringify([]));
   }
 }
 
