@@ -24,18 +24,17 @@ export default function BlogPage() {
 
   if (!blog) return null;
 
+  // Embed paraId so node clicks map directly to the right paragraph
   const locations = blog.paragraphs
     .filter(p => p.location)
-    .map(p => p.location);
+    .map(p => ({ ...p.location, paraId: p.id }));
 
   const hasMap = locations.length > 0;
   const paragraphImages = blog.paragraphs.filter(p => p.image);
 
   function handleNodeClick(loc) {
-    const para = blog.paragraphs.find(p => p.location && p.location.name === loc.name);
-    if (para && paragraphRefs.current[para.id]) {
-      paragraphRefs.current[para.id].scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    const el = paragraphRefs.current[loc.paraId];
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function handleLike() {
@@ -75,13 +74,9 @@ export default function BlogPage() {
                 {p.location && (
                   <span className="blog-page__para-location">📍 {p.location.name}</span>
                 )}
-                {/* When no map: float image right within paragraph */}
+                {/* Float image right only when there is no map */}
                 {p.image && !hasMap && (
-                  <img
-                    src={p.image}
-                    alt={p.heading || ""}
-                    className="blog-page__para-img-float"
-                  />
+                  <img src={p.image} alt={p.heading || ""} className="blog-page__para-img-float" />
                 )}
                 <p className="blog-page__para-body">{p.body}</p>
               </div>
@@ -101,11 +96,7 @@ export default function BlogPage() {
                       {p.heading && (
                         <span className="blog-page__right-image-label">{p.heading}</span>
                       )}
-                      <img
-                        src={p.image}
-                        alt={p.heading || ""}
-                        className="blog-page__right-image"
-                      />
+                      <img src={p.image} alt={p.heading || ""} className="blog-page__right-image" />
                     </div>
                   ))}
                 </div>

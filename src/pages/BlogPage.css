@@ -129,6 +129,7 @@
 .blog-page__para {
   margin-bottom: 2rem;
   overflow: hidden;
+  scroll-margin-top: 72px;
 }
 
 .blog-page__para-heading {

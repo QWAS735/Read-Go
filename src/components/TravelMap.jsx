@@ -3,7 +3,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./TravelMap.css";
 
-// Compute great circle intermediate points between two lat/lng coords
 function greatCirclePoints(lat1, lng1, lat2, lng2, numPoints = 80) {
   const toRad = d => (d * Math.PI) / 180;
   const toDeg = r => (r * 180) / Math.PI;
@@ -48,6 +47,20 @@ function getBounds(locations) {
   ];
 }
 
+function numberedIcon(n) {
+  return L.divIcon({
+    className: "",
+    html: `<div style="
+      width:24px;height:24px;background:#e85d04;border:2.5px solid #fff;
+      border-radius:50%;box-shadow:0 1px 6px rgba(0,0,0,0.35);
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:11px;font-weight:800;line-height:1;font-family:sans-serif;
+    ">${n}</div>`,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+  });
+}
+
 export default function TravelMap({ locations, onNodeClick }) {
   const mapRef = useRef(null);
   const instanceRef = useRef(null);
@@ -78,12 +91,11 @@ export default function TravelMap({ locations, onNodeClick }) {
     const map = instanceRef.current;
     if (!map || !locations || locations.length === 0) return;
 
-    // Clear existing layers except tile layer
     map.eachLayer(layer => {
       if (!(layer instanceof L.TileLayer)) map.removeLayer(layer);
     });
 
-    // Draw great circle arcs between consecutive locations
+    // Great circle arcs between consecutive locations
     for (let i = 0; i < locations.length - 1; i++) {
       const a = locations[i];
       const b = locations[i + 1];
@@ -96,29 +108,17 @@ export default function TravelMap({ locations, onNodeClick }) {
       }).addTo(map);
     }
 
-    // Draw markers
-    const orangeIcon = L.divIcon({
-      className: "",
-      html: `<div style="
-        width:16px;height:16px;background:#e85d04;border:3px solid #fff;
-        border-radius:50%;box-shadow:0 1px 6px rgba(0,0,0,0.35);
-        cursor:pointer;
-      "></div>`,
-      iconSize: [16, 16],
-      iconAnchor: [8, 8],
-    });
-
-    locations.forEach(loc => {
-      const marker = L.marker([loc.lat, loc.lng], { icon: orangeIcon })
+    // Numbered markers in paragraph order
+    locations.forEach((loc, index) => {
+      const marker = L.marker([loc.lat, loc.lng], { icon: numberedIcon(index + 1) })
         .addTo(map)
-        .bindTooltip(loc.name, { permanent: false, direction: "top" });
+        .bindTooltip(`${index + 1}. ${loc.name}`, { permanent: false, direction: "top" });
 
       if (onNodeClick) {
         marker.on("click", () => onNodeClick(loc));
       }
     });
 
-    // Fit bounds
     const bounds = getBounds(locations);
     if (bounds) {
       map.fitBounds(bounds, { padding: [30, 30] });

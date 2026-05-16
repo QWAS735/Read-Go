@@ -7,22 +7,31 @@ import "./CreationTool.css";
 
 const MAX_RATIO = 21 / 9;
 const MIN_RATIO = 9 / 21;
+const MAX_DIM = 960;
+const JPEG_QUALITY = 0.82;
 
-function validateAndReadImage(file) {
+// Validate aspect ratio then compress to JPEG via canvas to keep localStorage size manageable
+function compressAndValidateImage(file) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
-      const ratio = img.width / img.height;
       URL.revokeObjectURL(url);
+      const ratio = img.width / img.height;
       if (ratio > MAX_RATIO || ratio < MIN_RATIO) {
         reject("Aspect ratio must be between 9:21 and 21:9.");
         return;
       }
-      const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result);
-      reader.onerror = () => reject("Failed to read file.");
-      reader.readAsDataURL(file);
+      let w = img.width, h = img.height;
+      if (w > MAX_DIM || h > MAX_DIM) {
+        if (w >= h) { h = Math.round(h * MAX_DIM / w); w = MAX_DIM; }
+        else { w = Math.round(w * MAX_DIM / h); h = MAX_DIM; }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL("image/jpeg", JPEG_QUALITY));
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject("Invalid image file."); };
     img.src = url;
@@ -57,7 +66,7 @@ function ParagraphCard({ para, index, total, activeId, onEdit, onSave, onDelete,
     if (!file) return;
     setImgError("");
     try {
-      const base64 = await validateAndReadImage(file);
+      const base64 = await compressAndValidateImage(file);
       setDraft(d => ({ ...d, image: base64 }));
     } catch (err) {
       setImgError(err);
@@ -150,6 +159,7 @@ export default function CreationTool() {
   const [paragraphs, setParagraphs] = useState([]);
   const [activeId, setActiveId] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [thumbError, setThumbError] = useState("");
   const thumbInputRef = useRef(null);
@@ -169,7 +179,7 @@ export default function CreationTool() {
     if (!file) return;
     setThumbError("");
     try {
-      const base64 = await validateAndReadImage(file);
+      const base64 = await compressAndValidateImage(file);
       setThumbnail(base64);
     } catch (err) {
       setThumbError(err);
@@ -208,10 +218,15 @@ export default function CreationTool() {
   function handleBlogSave() {
     if (!blog) return;
     const updated = { ...blog, title: title || "Untitled Blog", thumbnail, paragraphs };
-    saveBlog(updated);
-    setBlog(updated);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      saveBlog(updated);
+      setBlog(updated);
+      setSaved(true);
+      setSaveError("");
+      setTimeout(() => setSaved(false), 2000);
+    } catch {
+      setSaveError("Save failed — storage quota exceeded. Try smaller images.");
+    }
   }
 
   function handleDeleteBlog() {
@@ -220,6 +235,7 @@ export default function CreationTool() {
   }
 
   function handleEditParagraph(paraId) {
+    if (paraId === null) { setActiveId(null); return; }
     if (activeId && activeId !== paraId) return;
     setActiveId(paraId);
   }
@@ -232,6 +248,7 @@ export default function CreationTool() {
         <div className="creation-tool__toprow">
           <button className="creation-tool__back" onClick={() => navigate("/create")}>← Back</button>
           <div className="creation-tool__toprow-right">
+            {saveError && <span className="creation-tool__save-error">{saveError}</span>}
             <button className="creation-tool__delete-btn" onClick={() => setShowDeleteConfirm(true)}>
               Delete Blog
             </button>
