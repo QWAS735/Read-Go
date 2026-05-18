@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { getBlog, incrementViews, toggleLike, isLiked } from "../data/storage";
+import { getBlog, incrementViews, toggleLike, isLiked, deleteBlog } from "../data/storage";
+import { useAuth } from "../context/AuthContext";
 import TravelMap from "../components/TravelMap";
 import CommentSection from "../components/CommentSection";
 import "./BlogPage.css";
@@ -8,9 +9,11 @@ import "./BlogPage.css";
 export default function BlogPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [blog, setBlog] = useState(null);
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const paragraphRefs = useRef({});
 
   useEffect(() => {
@@ -107,6 +110,27 @@ export default function BlogPage() {
 
         {/* Row 2: Comments */}
         <CommentSection blogId={id} initialComments={blog.comments} />
+
+        {/* Admin delete — only visible to the admin account */}
+        {user?.username === "admin" && (
+          <div className="blog-page__admin-bar">
+            {!confirmDelete ? (
+              <button className="blog-page__admin-delete" onClick={() => setConfirmDelete(true)}>
+                Delete Blog
+              </button>
+            ) : (
+              <div className="blog-page__admin-confirm">
+                <span>Are you sure? This cannot be undone.</span>
+                <button className="blog-page__admin-confirm-yes" onClick={() => { deleteBlog(id); navigate("/"); }}>
+                  Yes, delete
+                </button>
+                <button className="blog-page__admin-confirm-no" onClick={() => setConfirmDelete(false)}>
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </main>
   );
