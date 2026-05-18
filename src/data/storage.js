@@ -37,13 +37,23 @@ export function deleteBlog(id) {
   localStorage.setItem(BLOGS_KEY, JSON.stringify(blogs));
 }
 
-export function incrementViews(id) {
+const VIEWS_KEY = "readgo_views";
+
+export function incrementViews(blogId) {
+  const session = getSession();
+  const username = session?.username;
+  if (!username) return;
   const blogs = getBlogs();
-  const blog = blogs.find(b => b.id === id);
-  if (blog) {
-    blog.views = (blog.views || 0) + 1;
-    localStorage.setItem(BLOGS_KEY, JSON.stringify(blogs));
-  }
+  const blog = blogs.find(b => b.id === blogId);
+  if (!blog) return;
+  if (blog.author === username) return;
+  const views = JSON.parse(localStorage.getItem(VIEWS_KEY) || "{}");
+  const viewers = views[blogId] || [];
+  if (viewers.includes(username)) return;
+  views[blogId] = [...viewers, username];
+  localStorage.setItem(VIEWS_KEY, JSON.stringify(views));
+  blog.views = (blog.views || 0) + 1;
+  localStorage.setItem(BLOGS_KEY, JSON.stringify(blogs));
 }
 
 export function toggleLike(id) {
