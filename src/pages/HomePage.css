@@ -43,6 +43,7 @@
   padding-bottom: 0.75rem;
   scrollbar-width: thin;
   scrollbar-color: #e85d04 #f0f0f0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .home-row__scroll::-webkit-scrollbar {
@@ -74,4 +75,22 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .home {
+    padding: 1.25rem 1rem 3rem;
+  }
+
+  .home-row {
+    margin-bottom: 2rem;
+  }
+
+  .home-row__title-btn {
+    font-size: 1.05rem;
+  }
+
+  .home-recent__grid {
+    grid-template-columns: 1fr;
+  }
 }

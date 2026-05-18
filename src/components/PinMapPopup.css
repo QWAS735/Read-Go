@@ -6,13 +6,14 @@
   align-items: center;
   justify-content: center;
   z-index: 1100;
+  padding: 1rem;
 }
 
 .pinmap-box {
   background: #fff;
   border-radius: 14px;
-  width: 640px;
-  max-width: 96vw;
+  width: 100%;
+  max-width: 640px;
   padding: 1rem;
   position: relative;
   box-shadow: 0 8px 40px rgba(0,0,0,0.22);
@@ -84,4 +85,21 @@
 .pinmap-save:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .pinmap-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .pinmap-box {
+    border-radius: 14px 14px 0 0;
+    max-width: 100%;
+    padding: 0.85rem;
+  }
+
+  .pinmap-map {
+    height: 55vh;
+  }
 }

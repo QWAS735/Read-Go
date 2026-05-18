@@ -6,13 +6,15 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 1rem;
 }
 
 .modal-box {
   background: #fff;
   border-radius: 12px;
   padding: 2rem;
-  width: 340px;
+  width: 100%;
+  max-width: 340px;
   position: relative;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
 }
@@ -62,6 +64,8 @@
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .modal-input:focus {
@@ -85,6 +89,7 @@
   cursor: pointer;
   transition: background 0.2s;
   margin-top: 0.25rem;
+  width: 100%;
 }
 
 .modal-submit:hover {
