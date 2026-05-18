@@ -10,7 +10,6 @@ const MIN_RATIO = 9 / 21;
 const MAX_DIM = 960;
 const JPEG_QUALITY = 0.82;
 
-// Validate aspect ratio then compress to JPEG via canvas to keep localStorage size manageable
 function compressAndValidateImage(file) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -110,7 +109,6 @@ function ParagraphCard({ para, index, total, activeId, onEdit, onSave, onDelete,
           value={draft.heading}
           onChange={e => setDraft(d => ({ ...d, heading: e.target.value }))}
         />
-        {/* Image upload beneath heading */}
         <div className="para-card__image-section">
           {draft.image && (
             <div className="para-card__image-preview-wrap">
@@ -128,7 +126,6 @@ function ParagraphCard({ para, index, total, activeId, onEdit, onSave, onDelete,
           </label>
           {imgError && <p className="para-card__image-error">{imgError}</p>}
         </div>
-
         <textarea
           className="para-card__body-input"
           placeholder="Paragraph body..."
@@ -165,13 +162,16 @@ export default function CreationTool() {
   const thumbInputRef = useRef(null);
 
   useEffect(() => {
-    const b = getBlog(id);
-    if (!b) { navigate("/create"); return; }
-    if (b.author !== user?.username) { navigate("/create"); return; }
-    setBlog(b);
-    setTitle(b.title);
-    setThumbnail(b.thumbnail || "");
-    setParagraphs(b.paragraphs || []);
+    async function load() {
+      const b = await getBlog(id);
+      if (!b) { navigate("/create"); return; }
+      if (b.author !== user?.username) { navigate("/create"); return; }
+      setBlog(b);
+      setTitle(b.title);
+      setThumbnail(b.thumbnail || "");
+      setParagraphs(b.paragraphs || []);
+    }
+    load();
   }, [id]);
 
   async function handleThumbnailUpload(e) {
@@ -215,22 +215,22 @@ export default function CreationTool() {
     setActiveId(newPara.id);
   }
 
-  function handleBlogSave() {
+  async function handleBlogSave() {
     if (!blog) return;
     const updated = { ...blog, title: title || "Untitled Blog", thumbnail, paragraphs };
     try {
-      saveBlog(updated);
+      await saveBlog(updated);
       setBlog(updated);
       setSaved(true);
       setSaveError("");
       setTimeout(() => setSaved(false), 2000);
     } catch {
-      setSaveError("Save failed — storage quota exceeded. Try smaller images.");
+      setSaveError("Save failed. Try smaller images.");
     }
   }
 
-  function handleDeleteBlog() {
-    deleteBlog(id);
+  async function handleDeleteBlog() {
+    await deleteBlog(id);
     navigate("/create");
   }
 
@@ -258,7 +258,6 @@ export default function CreationTool() {
           </div>
         </div>
 
-        {/* Title input */}
         <input
           className="creation-tool__title-input"
           type="text"
@@ -267,7 +266,6 @@ export default function CreationTool() {
           onChange={e => setTitle(e.target.value)}
         />
 
-        {/* Thumbnail upload beneath title */}
         <div className="creation-tool__thumbnail-section">
           {thumbnail && (
             <div className="creation-tool__thumbnail-preview-wrap">
@@ -286,7 +284,6 @@ export default function CreationTool() {
           {thumbError && <p className="creation-tool__thumb-error">{thumbError}</p>}
         </div>
 
-        {/* Paragraphs */}
         <div className="creation-tool__paragraphs">
           {paragraphs.map((p, i) => (
             <ParagraphCard
@@ -316,7 +313,7 @@ export default function CreationTool() {
           <div className="creation-tool__preview-link">
             <button
               className="creation-tool__preview-btn"
-              onClick={() => { handleBlogSave(); navigate(`/blog/${id}`); }}
+              onClick={async () => { await handleBlogSave(); navigate(`/blog/${id}`); }}
             >
               Save &amp; Preview →
             </button>

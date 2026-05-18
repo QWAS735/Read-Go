@@ -11,8 +11,8 @@ export function AuthProvider({ children }) {
     if (session) setUser(session);
   }, []);
 
-  function signIn(username, password) {
-    const result = storageSignIn(username, password);
+  async function signIn(username, password) {
+    const result = await storageSignIn(username, password);
     if (result.success) setUser({ username: result.user.username });
     return result;
   }

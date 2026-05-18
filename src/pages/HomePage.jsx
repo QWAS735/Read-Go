@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBlogs } from "../data/storage";
 import { LargeBlogCard, SmallBlogCard } from "../components/BlogCard";
@@ -20,7 +21,11 @@ function HorizontalRow({ title, blogs, linkTo }) {
 }
 
 export default function HomePage() {
-  const blogs = getBlogs();
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    getBlogs().then(setBlogs);
+  }, []);
 
   const mostViewed = [...blogs].sort((a, b) => b.views - a.views).slice(0, 10);
   const mostLiked = [...blogs].sort((a, b) => b.likes - a.likes).slice(0, 10);

@@ -20,7 +20,7 @@ export default function CommentSection({ blogId, initialComments }) {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!text.trim()) return;
     if (!user) {
@@ -33,7 +33,7 @@ export default function CommentSection({ blogId, initialComments }) {
       text: text.trim(),
       createdAt: new Date().toISOString(),
     };
-    addComment(blogId, comment);
+    await addComment(blogId, comment);
     setComments(prev => [...prev, comment]);
     setText("");
     setError("");

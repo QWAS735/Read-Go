@@ -17,17 +17,21 @@ export default function BlogPage() {
   const paragraphRefs = useRef({});
 
   useEffect(() => {
-    const b = getBlog(id);
-    if (!b) { navigate("/"); return; }
-    incrementViews(id);
-    setBlog(b);
-    setLiked(isLiked(id));
-    setLikes(b.likes);
-  }, [id]);
+    async function load() {
+      const b = await getBlog(id);
+      if (!b) { navigate("/"); return; }
+      setBlog(b);
+      setLikes(b.likes);
+      const username = user?.username;
+      await incrementViews(id, username);
+      const liked = await isLiked(id, username);
+      setLiked(liked);
+    }
+    load();
+  }, [id, user]);
 
   if (!blog) return null;
 
-  // Embed paraId so node clicks map directly to the right paragraph
   const locations = blog.paragraphs
     .filter(p => p.location)
     .map(p => ({ ...p.location, paraId: p.id }));
@@ -40,16 +44,21 @@ export default function BlogPage() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function handleLike() {
-    const result = toggleLike(id);
+  async function handleLike() {
+    if (!user) return;
+    const result = await toggleLike(id, user.username);
     setLiked(result.isLiked);
     setLikes(result.likes);
+  }
+
+  async function handleAdminDelete() {
+    await deleteBlog(id);
+    navigate("/");
   }
 
   return (
     <main className="blog-page">
       <div className="blog-page__inner">
-        {/* Row 0: Title */}
         <h1 className="blog-page__title">{blog.title}</h1>
         <div className="blog-page__byline">
           <span className="blog-page__author">@{blog.author}</span>
@@ -64,7 +73,6 @@ export default function BlogPage() {
           </button>
         </div>
 
-        {/* Row 1: Content + right column */}
         <div className="blog-page__body">
           <div className="blog-page__content">
             {blog.paragraphs.map(p => (
@@ -77,7 +85,6 @@ export default function BlogPage() {
                 {p.location && (
                   <span className="blog-page__para-location">📍 {p.location.name}</span>
                 )}
-                {/* Float image right only when there is no map */}
                 {p.image && !hasMap && (
                   <img src={p.image} alt={p.heading || ""} className="blog-page__para-img-float" />
                 )}
@@ -86,7 +93,6 @@ export default function BlogPage() {
             ))}
           </div>
 
-          {/* Right column: map + paragraph images stacked below */}
           {hasMap && (
             <div className="blog-page__right-col">
               <div className="blog-page__map-sticky">
@@ -108,10 +114,8 @@ export default function BlogPage() {
           )}
         </div>
 
-        {/* Row 2: Comments */}
         <CommentSection blogId={id} initialComments={blog.comments} />
 
-        {/* Admin delete — only visible to the admin account */}
         {user?.username === "Admin" && (
           <div className="blog-page__admin-bar">
             {!confirmDelete ? (
@@ -121,7 +125,7 @@ export default function BlogPage() {
             ) : (
               <div className="blog-page__admin-confirm">
                 <span>Are you sure? This cannot be undone.</span>
-                <button className="blog-page__admin-confirm-yes" onClick={() => { deleteBlog(id); navigate("/"); }}>
+                <button className="blog-page__admin-confirm-yes" onClick={handleAdminDelete}>
                   Yes, delete
                 </button>
                 <button className="blog-page__admin-confirm-no" onClick={() => setConfirmDelete(false)}>

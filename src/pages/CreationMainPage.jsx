@@ -1,11 +1,19 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getUserBlogs, generateId, saveBlog, addBlogToUser } from "../data/storage";
+import { getUserBlogs, generateId, saveBlog } from "../data/storage";
 import "./CreationMainPage.css";
 
 export default function CreationMainPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [myBlogs, setMyBlogs] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      getUserBlogs(user.username).then(setMyBlogs);
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -15,9 +23,7 @@ export default function CreationMainPage() {
     );
   }
 
-  const myBlogs = getUserBlogs(user.username);
-
-  function handleNewBlog() {
+  async function handleNewBlog() {
     const id = generateId();
     const blog = {
       id,
@@ -30,8 +36,7 @@ export default function CreationMainPage() {
       paragraphs: [],
       comments: [],
     };
-    saveBlog(blog);
-    addBlogToUser(user.username, id);
+    await saveBlog(blog);
     navigate(`/edit/${id}`);
   }
 
@@ -45,10 +50,10 @@ export default function CreationMainPage() {
             className="creation-card"
             onClick={() => navigate(`/edit/${blog.id}`)}
           >
-            {blog.thumbnail && (
-              <img src={blog.thumbnail} alt={blog.title} className="creation-card__thumb" />
-            )}
-            {!blog.thumbnail && <div className="creation-card__no-thumb">No thumbnail</div>}
+            {blog.thumbnail
+              ? <img src={blog.thumbnail} alt={blog.title} className="creation-card__thumb" />
+              : <div className="creation-card__no-thumb">No thumbnail</div>
+            }
             <div className="creation-card__body">
               <h3 className="creation-card__title">{blog.title}</h3>
               <p className="creation-card__meta">
