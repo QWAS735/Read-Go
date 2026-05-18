@@ -112,7 +112,7 @@ export default function BlogPage() {
         <CommentSection blogId={id} initialComments={blog.comments} />
 
         {/* Admin delete — only visible to the admin account */}
-        {user?.username?.toLowerCase() === "admin" && (
+        {user?.username === "Admin" && (
           <div className="blog-page__admin-bar">
             {!confirmDelete ? (
               <button className="blog-page__admin-delete" onClick={() => setConfirmDelete(true)}>
