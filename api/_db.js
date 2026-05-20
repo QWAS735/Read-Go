@@ -14,8 +14,10 @@ export async function db() {
     ready = (async () => {
       await q`CREATE TABLE IF NOT EXISTS users (
         username TEXT PRIMARY KEY,
-        password TEXT NOT NULL
+        password TEXT NOT NULL DEFAULT ''
       )`;
+      await q`ALTER TABLE users ADD COLUMN IF NOT EXISTS password TEXT NOT NULL DEFAULT ''`;
+      await q`ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL`.catch(() => {});
       await q`CREATE TABLE IF NOT EXISTS blogs (
         id TEXT PRIMARY KEY,
         title TEXT NOT NULL DEFAULT 'Untitled Blog',
