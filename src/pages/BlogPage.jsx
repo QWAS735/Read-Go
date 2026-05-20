@@ -61,6 +61,11 @@ export default function BlogPage() {
     <main className="blog-page">
       <div className="blog-page__inner">
         <h1 className="blog-page__title">{blog.title}</h1>
+        {blog.thumbnail && (
+          <div className="blog-page__thumb-wrap">
+            <img src={blog.thumbnail} alt={blog.title} className="blog-page__thumb" />
+          </div>
+        )}
         <div className="blog-page__byline">
           <span className="blog-page__author">@{blog.author}</span>
           <span className="blog-page__date">
