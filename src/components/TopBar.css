@@ -29,6 +29,16 @@
   user-select: none;
   white-space: nowrap;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.topbar-logo__img {
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .topbar-username {

@@ -14,7 +14,10 @@ export default function TopBar() {
     <>
       <header className="topbar">
         <div className="topbar-left">
-          <span className="topbar-logo" onClick={() => navigate("/")}>Read&amp;Go</span>
+          <span className="topbar-logo" onClick={() => navigate("/")}>
+            <img src="/logo.png" alt="" className="topbar-logo__img" />
+            Read&amp;Go
+          </span>
           {user && <span className="topbar-username">@{user.username}</span>}
         </div>
         <div className="topbar-center">
