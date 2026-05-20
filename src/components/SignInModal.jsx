@@ -8,13 +8,13 @@ export default function SignInModal({ onClose }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
       setError("Please fill in both fields.");
       return;
     }
-    const result = signIn(username.trim(), password);
+    const result = await signIn(username.trim(), password);
     if (result.success) {
       onClose();
     } else {
