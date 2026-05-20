@@ -98,17 +98,17 @@
   min-width: 0;
 }
 
-/* Right column: map (sticky) + images stacked below */
+/* Right column sticks as a unit while content scrolls beside it */
 .blog-page__right-col {
   width: 380px;
   flex-shrink: 0;
+  position: sticky;
+  top: 72px;
+  align-self: flex-start;
 }
 
 .blog-page__map-sticky {
-  position: sticky;
-  top: 72px;
   height: 420px;
-  flex-shrink: 0;
 }
 
 /* Paragraph images below the map */
@@ -266,10 +266,11 @@
 
   .blog-page__right-col {
     width: 100%;
+    position: static;
+    align-self: auto;
   }
 
   .blog-page__map-sticky {
-    position: static;
     height: 300px;
   }
 
