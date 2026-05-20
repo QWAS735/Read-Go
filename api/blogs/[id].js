@@ -1,19 +1,32 @@
-import { kv } from '@vercel/kv';
+import { db } from "../_db.js";
+
+function toClient(r) {
+  return {
+    id: r.id,
+    title: r.title,
+    author: r.author,
+    thumbnail: r.thumbnail,
+    paragraphs: r.paragraphs,
+    views: r.views,
+    likes: r.likes,
+    comments: r.comments,
+    createdAt: r.created_at,
+  };
+}
 
 export default async function handler(req, res) {
   const { id } = req.query;
-
   try {
-    if (req.method === 'GET') {
-      const blog = await kv.get(`blog:${id}`);
-      if (!blog) return res.status(404).json({ error: 'Not found' });
-      return res.json(blog);
+    const sql = await db();
+
+    if (req.method === "GET") {
+      const [blog] = await sql`SELECT * FROM blogs WHERE id = ${id}`;
+      if (!blog) return res.status(404).json({ error: "Not found" });
+      return res.json(toClient(blog));
     }
 
-    if (req.method === 'DELETE') {
-      await kv.del(`blog:${id}`);
-      const ids = (await kv.get('blogs:ids')) || [];
-      await kv.set('blogs:ids', ids.filter(i => i !== id));
+    if (req.method === "DELETE") {
+      await sql`DELETE FROM blogs WHERE id = ${id}`;
       return res.json({ success: true });
     }
 

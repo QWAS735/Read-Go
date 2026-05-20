@@ -2,7 +2,9 @@ const SESSION_KEY = 'readgo_session';
 
 export async function getBlogs() {
   const res = await fetch('/api/blogs');
-  return res.json();
+  if (!res.ok) return [];
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
 }
 
 export async function getBlog(id) {
@@ -82,7 +84,9 @@ export function getSession() {
 
 export async function getUserBlogs(username) {
   const res = await fetch(`/api/users/${encodeURIComponent(username)}/blogs`);
-  return res.json();
+  if (!res.ok) return [];
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
 }
 
 export function generateId() {

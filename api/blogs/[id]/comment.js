@@ -1,17 +1,19 @@
-import { kv } from '@vercel/kv';
+import { db } from "../../_db.js";
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+  if (req.method !== "POST") return res.status(405).end();
 
   const { id } = req.query;
-  const { comment } = req.body;
+  const { comment } = req.body ?? {};
 
   try {
-    const blog = await kv.get(`blog:${id}`);
-    if (!blog) return res.status(404).json({ error: 'Not found' });
+    const sql = await db();
 
-    blog.comments = [...(blog.comments || []), comment];
-    await kv.set(`blog:${id}`, blog);
+    const [blog] = await sql`SELECT comments FROM blogs WHERE id = ${id}`;
+    if (!blog) return res.status(404).json({ error: "Not found" });
+
+    const updated = [...(blog.comments || []), comment];
+    await sql`UPDATE blogs SET comments = ${JSON.stringify(updated)} WHERE id = ${id}`;
 
     return res.json({ success: true });
   } catch (err) {
