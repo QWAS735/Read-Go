@@ -109,6 +109,9 @@
 
 .blog-page__map-sticky {
   height: 420px;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 /* Paragraph images below the map */
@@ -117,6 +120,8 @@
   flex-direction: column;
   gap: 1rem;
   margin-top: 1.25rem;
+  position: relative;
+  z-index: 1;
 }
 
 .blog-page__right-image-block {
