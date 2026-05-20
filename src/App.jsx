@@ -6,6 +6,7 @@ import BlogListPage from "./pages/BlogListPage";
 import BlogPage from "./pages/BlogPage";
 import CreationMainPage from "./pages/CreationMainPage";
 import CreationTool from "./pages/CreationTool";
+import SearchPage from "./pages/SearchPage";
 import "./App.css";
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <TopBar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/list/:type" element={<BlogListPage />} />
           <Route path="/blog/:id" element={<BlogPage />} />
           <Route path="/create" element={<CreationMainPage />} />

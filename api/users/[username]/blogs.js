@@ -19,6 +19,7 @@ export default async function handler(req, res) {
       views: r.views,
       likes: r.likes,
       comments: r.comments,
+      tags: r.tags || [],
       createdAt: r.created_at,
     })));
   } catch (err) {

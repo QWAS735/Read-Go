@@ -567,6 +567,80 @@
   background: #b71c1c;
 }
 
+/* Tags section */
+.creation-tool__tags-section {
+  margin-bottom: 1.8rem;
+}
+
+.creation-tool__tags-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+
+.creation-tool__tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.4rem 0.65rem;
+  min-height: 42px;
+  background: #fff;
+  cursor: text;
+  transition: border-color 0.2s;
+}
+
+.creation-tool__tags-row:focus-within {
+  border-color: #e85d04;
+}
+
+.creation-tool__tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.creation-tool__tag-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.68rem;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.65;
+  color: inherit;
+  font-family: inherit;
+}
+
+.creation-tool__tag-remove:hover {
+  opacity: 1;
+}
+
+.creation-tool__tag-input {
+  border: none;
+  outline: none;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: #333;
+  flex: 1;
+  min-width: 120px;
+  background: transparent;
+}
+
+.creation-tool__tag-input::placeholder {
+  color: #bbb;
+}
+
 @media (max-width: 600px) {
   .creation-tool {
     padding: 1.25rem 1rem 3rem;

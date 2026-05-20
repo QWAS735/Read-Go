@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getBlog, saveBlog, deleteBlog, generateParagraphId } from "../data/storage";
 import { useAuth } from "../context/AuthContext";
+import { tagColor } from "../data/tags";
 import LocationInput from "../components/LocationInput";
 import "./CreationTool.css";
 
@@ -154,6 +155,8 @@ export default function CreationTool() {
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [paragraphs, setParagraphs] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
   const [activeId, setActiveId] = useState(null);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState("");
@@ -170,6 +173,7 @@ export default function CreationTool() {
       setTitle(b.title);
       setThumbnail(b.thumbnail || "");
       setParagraphs(b.paragraphs || []);
+      setTags(b.tags || []);
     }
     load();
   }, [id]);
@@ -217,7 +221,7 @@ export default function CreationTool() {
 
   async function handleBlogSave() {
     if (!blog) return;
-    const updated = { ...blog, title: title || "Untitled Blog", thumbnail, paragraphs };
+    const updated = { ...blog, title: title || "Untitled Blog", thumbnail, paragraphs, tags };
     try {
       await saveBlog(updated);
       setBlog(updated);
@@ -232,6 +236,21 @@ export default function CreationTool() {
   async function handleDeleteBlog() {
     await deleteBlog(id);
     navigate("/create");
+  }
+
+  function addTag(raw) {
+    const t = raw.trim().toLowerCase().replace(/,/g, "");
+    if (t && !tags.includes(t)) setTags(prev => [...prev, t]);
+    setTagInput("");
+  }
+
+  function handleTagKeyDown(e) {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addTag(tagInput);
+    } else if (e.key === "Backspace" && !tagInput && tags.length > 0) {
+      setTags(prev => prev.slice(0, -1));
+    }
   }
 
   function handleEditParagraph(paraId) {
@@ -282,6 +301,34 @@ export default function CreationTool() {
             <input ref={thumbInputRef} type="file" accept="image/*" hidden onChange={handleThumbnailUpload} />
           </label>
           {thumbError && <p className="creation-tool__thumb-error">{thumbError}</p>}
+        </div>
+
+        <div className="creation-tool__tags-section">
+          <span className="creation-tool__tags-label">Tags</span>
+          <div className="creation-tool__tags-row">
+            {tags.map(tag => {
+              const { bg, fg } = tagColor(tag);
+              return (
+                <span key={tag} className="creation-tool__tag-pill" style={{ background: bg, color: fg }}>
+                  {tag}
+                  <button
+                    className="creation-tool__tag-remove"
+                    type="button"
+                    onClick={() => setTags(prev => prev.filter(t => t !== tag))}
+                  >✕</button>
+                </span>
+              );
+            })}
+            <input
+              className="creation-tool__tag-input"
+              type="text"
+              placeholder={tags.length === 0 ? "Add tags (press Enter or comma)…" : "Add another…"}
+              value={tagInput}
+              onChange={e => setTagInput(e.target.value)}
+              onKeyDown={handleTagKeyDown}
+              onBlur={() => { if (tagInput.trim()) addTag(tagInput); }}
+            />
+          </div>
         </div>
 
         <div className="creation-tool__paragraphs">

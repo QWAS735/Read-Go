@@ -10,6 +10,7 @@ function toClient(r) {
     views: r.views,
     likes: r.likes,
     comments: r.comments,
+    tags: r.tags || [],
     createdAt: r.created_at,
   };
 }

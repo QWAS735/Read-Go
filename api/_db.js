@@ -25,8 +25,10 @@ export async function db() {
         views INT NOT NULL DEFAULT 0,
         likes INT NOT NULL DEFAULT 0,
         comments JSONB NOT NULL DEFAULT '[]',
+        tags TEXT[] NOT NULL DEFAULT '{}',
         created_at TIMESTAMPTZ DEFAULT NOW()
       )`;
+      await q`ALTER TABLE blogs ADD COLUMN IF NOT EXISTS tags TEXT[] NOT NULL DEFAULT '{}'`;
       await q`CREATE TABLE IF NOT EXISTS blog_likes (
         blog_id TEXT NOT NULL REFERENCES blogs(id) ON DELETE CASCADE,
         username TEXT NOT NULL,

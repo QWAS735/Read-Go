@@ -57,6 +57,22 @@
   background: #fff5ef;
 }
 
+.blog-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+}
+
+.blog-page__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 /* Content + right column side by side */
 .blog-page__body {
   display: flex;

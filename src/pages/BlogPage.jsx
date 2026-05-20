@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { getBlog, incrementViews, toggleLike, isLiked, deleteBlog } from "../data/storage";
 import { useAuth } from "../context/AuthContext";
+import { tagColor } from "../data/tags";
 import TravelMap from "../components/TravelMap";
 import CommentSection from "../components/CommentSection";
 import "./BlogPage.css";
@@ -72,6 +73,18 @@ export default function BlogPage() {
             {liked ? "♥" : "♡"} {likes.toLocaleString()}
           </button>
         </div>
+        {blog.tags && blog.tags.length > 0 && (
+          <div className="blog-page__tags">
+            {blog.tags.map(tag => {
+              const { bg, fg } = tagColor(tag);
+              return (
+                <span key={tag} className="blog-page__tag" style={{ background: bg, color: fg }}>
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
 
         <div className="blog-page__body">
           <div className="blog-page__content">
