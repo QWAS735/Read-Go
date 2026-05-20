@@ -91,6 +91,8 @@
 .blog-page__body {
   display: flex;
   gap: 2rem;
+  position: relative;
+  z-index: 0;
 }
 
 .blog-page__content {
