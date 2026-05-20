@@ -35,8 +35,8 @@
 }
 
 .topbar-logo__img {
-  height: 28px;
-  width: 28px;
+  height: 40px;
+  width: 40px;
   object-fit: contain;
   flex-shrink: 0;
 }
