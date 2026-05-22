@@ -7,6 +7,7 @@ import BlogPage from "./pages/BlogPage";
 import CreationMainPage from "./pages/CreationMainPage";
 import CreationTool from "./pages/CreationTool";
 import SearchPage from "./pages/SearchPage";
+import ModerationPage from "./pages/ModerationPage";
 import "./App.css";
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/blog/:id" element={<BlogPage />} />
           <Route path="/create" element={<CreationMainPage />} />
           <Route path="/edit/:id" element={<CreationTool />} />
+          <Route path="/moderation" element={<ModerationPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

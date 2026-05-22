@@ -1,19 +1,5 @@
 import { db } from "../_db.js";
-
-function toClient(r) {
-  return {
-    id: r.id,
-    title: r.title,
-    author: r.author,
-    thumbnail: r.thumbnail,
-    paragraphs: r.paragraphs,
-    views: r.views,
-    likes: r.likes,
-    comments: r.comments,
-    tags: r.tags || [],
-    createdAt: r.created_at,
-  };
-}
+import { toClient } from "../_toClient.js";
 
 export default async function handler(req, res) {
   const { id } = req.query;

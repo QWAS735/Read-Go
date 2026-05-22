@@ -61,6 +61,12 @@ export default function CreationMainPage() {
                 &nbsp;·&nbsp;
                 {new Date(blog.createdAt).toLocaleDateString()}
               </p>
+              <span className={`creation-card__status creation-card__status--${blog.status || "draft"}`}>
+                {blog.status === "pending" ? "Pending Review"
+                  : blog.status === "published" ? "Published"
+                  : blog.status === "rejected" ? "Rejected"
+                  : "Draft"}
+              </span>
             </div>
           </div>
         ))}

@@ -70,10 +70,23 @@
 }
 
 .creation-card__meta {
-  margin: 0;
+  margin: 0 0 0.4rem;
   font-size: 0.78rem;
   color: #888;
 }
+
+.creation-card__status {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.18rem 0.55rem;
+  border-radius: 20px;
+}
+
+.creation-card__status--draft     { background: #f0f0f0; color: #888; }
+.creation-card__status--pending   { background: #fff3e0; color: #e65100; }
+.creation-card__status--published { background: #e8f5e9; color: #2e7d32; }
+.creation-card__status--rejected  { background: #fde8e8; color: #c62828; }
 
 /* New blog card */
 .creation-card--new {

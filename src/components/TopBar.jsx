@@ -26,6 +26,11 @@ export default function TopBar() {
         <div className="topbar-right">
           {user ? (
             <>
+              {["Admin", "Moderator"].includes(user.username) && (
+                <button className="topbar-btn topbar-mod" onClick={() => navigate("/moderation")}>
+                  Moderation
+                </button>
+              )}
               <button className="topbar-btn topbar-create" onClick={() => navigate("/create")}>
                 Create
               </button>

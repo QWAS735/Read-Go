@@ -31,6 +31,8 @@ export async function db() {
         created_at TIMESTAMPTZ DEFAULT NOW()
       )`;
       await q`ALTER TABLE blogs ADD COLUMN IF NOT EXISTS tags TEXT[] NOT NULL DEFAULT '{}'`;
+      await q`ALTER TABLE blogs ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'published'`;
+      await q`ALTER TABLE blogs ADD COLUMN IF NOT EXISTS rejection_reason TEXT NOT NULL DEFAULT ''`;
       await q`CREATE TABLE IF NOT EXISTS blog_likes (
         blog_id TEXT NOT NULL REFERENCES blogs(id) ON DELETE CASCADE,
         username TEXT NOT NULL,

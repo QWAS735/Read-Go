@@ -89,6 +89,22 @@ export async function getUserBlogs(username) {
   return Array.isArray(data) ? data : [];
 }
 
+export async function updateBlogStatus(blogId, username, status, reason = "") {
+  const res = await fetch(`/api/blogs/${blogId}/status`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, status, reason }),
+  });
+  return res.json();
+}
+
+export async function getPendingBlogs(username) {
+  const res = await fetch(`/api/blogs?status=pending&username=${encodeURIComponent(username)}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
+}
+
 export function generateId() {
   return 'blog-' + Math.random().toString(36).slice(2, 9);
 }

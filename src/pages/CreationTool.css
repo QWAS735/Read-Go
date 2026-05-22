@@ -22,6 +22,46 @@
   gap: 0.6rem;
 }
 
+.creation-tool__status {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+}
+
+.creation-tool__status--draft     { background: #f0f0f0; color: #888; }
+.creation-tool__status--pending   { background: #fff3e0; color: #e65100; }
+.creation-tool__status--published { background: #e8f5e9; color: #2e7d32; }
+.creation-tool__status--rejected  { background: #fde8e8; color: #c62828; }
+
+.creation-tool__submit-btn {
+  background: #1565c0;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+  font-family: inherit;
+}
+
+.creation-tool__submit-btn:hover {
+  background: #0d47a1;
+}
+
+.creation-tool__rejection-notice {
+  background: #fde8e8;
+  border: 1.5px solid #f5c6c6;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-size: 0.88rem;
+  color: #c62828;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
 .creation-tool__delete-btn {
   background: none;
   border: 1.5px solid #d32f2f;

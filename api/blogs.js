@@ -1,26 +1,21 @@
 import { db } from "./_db.js";
-
-function toClient(r) {
-  return {
-    id: r.id,
-    title: r.title,
-    author: r.author,
-    thumbnail: r.thumbnail,
-    paragraphs: r.paragraphs,
-    views: r.views,
-    likes: r.likes,
-    comments: r.comments,
-    tags: r.tags || [],
-    createdAt: r.created_at,
-  };
-}
+import { toClient } from "./_toClient.js";
+import { MODERATORS } from "./_roles.js";
 
 export default async function handler(req, res) {
   try {
     const sql = await db();
 
     if (req.method === "GET") {
-      const rows = await sql`SELECT * FROM blogs ORDER BY created_at DESC`;
+      const { status, username } = req.query;
+
+      if (status === "pending") {
+        if (!MODERATORS.includes(username)) return res.status(403).json({ error: "Forbidden" });
+        const rows = await sql`SELECT * FROM blogs WHERE status = 'pending' ORDER BY created_at ASC`;
+        return res.json(rows.map(toClient));
+      }
+
+      const rows = await sql`SELECT * FROM blogs WHERE status = 'published' ORDER BY created_at DESC`;
       return res.json(rows.map(toClient));
     }
 
@@ -29,14 +24,15 @@ export default async function handler(req, res) {
       if (!id || !author) return res.status(400).json({ error: "Missing fields" });
 
       await sql`
-        INSERT INTO blogs (id, title, author, thumbnail, paragraphs, tags)
+        INSERT INTO blogs (id, title, author, thumbnail, paragraphs, tags, status)
         VALUES (
           ${id},
           ${title ?? "Untitled Blog"},
           ${author},
           ${thumbnail ?? ""},
           ${JSON.stringify(paragraphs ?? [])},
-          ${tags ?? []}
+          ${tags ?? []},
+          'draft'
         )
         ON CONFLICT (id) DO UPDATE SET
           title = EXCLUDED.title,

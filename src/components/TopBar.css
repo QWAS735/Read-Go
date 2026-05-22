@@ -95,6 +95,16 @@
   background: #ffe5d0;
 }
 
+.topbar-mod {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.5);
+}
+
+.topbar-mod:hover {
+  background: rgba(255,255,255,0.3);
+}
+
 .topbar-logout {
   background: rgba(255,255,255,0.18);
   color: #fff;

@@ -1,0 +1,192 @@
+.mod-page {
+  padding: 2.5rem 2.5rem 4rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mod-page__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 1.8rem;
+}
+
+.mod-page__empty {
+  color: #888;
+  font-size: 1rem;
+  margin-top: 2rem;
+}
+
+.mod-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.mod-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  padding: 1.25rem 1.5rem;
+}
+
+.mod-card__meta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.mod-card__author {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #e85d04;
+}
+
+.mod-card__date {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.mod-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem;
+}
+
+.mod-card__preview {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.55;
+  margin: 0 0 1rem;
+}
+
+.mod-card__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mod-card__read-btn {
+  background: none;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #555;
+  transition: border-color 0.15s, color 0.15s;
+  font-family: inherit;
+}
+
+.mod-card__read-btn:hover {
+  border-color: #aaa;
+  color: #1a1a1a;
+}
+
+.mod-card__approve-btn {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.mod-card__approve-btn:hover {
+  background: #1b5e20;
+}
+
+.mod-card__reject-btn {
+  background: none;
+  border: 1.5px solid #d32f2f;
+  color: #d32f2f;
+  border-radius: 8px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+}
+
+.mod-card__reject-btn:hover {
+  background: #d32f2f;
+  color: #fff;
+}
+
+.mod-card__reject-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.mod-card__reason-input {
+  flex: 1;
+  min-width: 160px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.38rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.mod-card__reason-input:focus {
+  border-color: #e85d04;
+}
+
+.mod-card__reject-confirm-btn {
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.38rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.mod-card__reject-confirm-btn:hover {
+  background: #b71c1c;
+}
+
+.mod-card__reject-cancel-btn {
+  background: none;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 0.38rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #555;
+  font-family: inherit;
+  transition: border-color 0.15s;
+  white-space: nowrap;
+}
+
+.mod-card__reject-cancel-btn:hover {
+  border-color: #aaa;
+}
+
+@media (max-width: 600px) {
+  .mod-page {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .mod-page__title {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+}

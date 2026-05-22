@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlog, saveBlog, deleteBlog, generateParagraphId } from "../data/storage";
+import { getBlog, saveBlog, deleteBlog, generateParagraphId, updateBlogStatus } from "../data/storage";
 import { useAuth } from "../context/AuthContext";
 import { tagColor } from "../data/tags";
 import LocationInput from "../components/LocationInput";
@@ -158,6 +158,8 @@ export default function CreationTool() {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [activeId, setActiveId] = useState(null);
+  const [status, setStatus] = useState("draft");
+  const [rejectionReason, setRejectionReason] = useState("");
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -174,6 +176,8 @@ export default function CreationTool() {
       setThumbnail(b.thumbnail || "");
       setParagraphs(b.paragraphs || []);
       setTags(b.tags || []);
+      setStatus(b.status || "draft");
+      setRejectionReason(b.rejectionReason || "");
     }
     load();
   }, [id]);
@@ -238,6 +242,12 @@ export default function CreationTool() {
     navigate("/create");
   }
 
+  async function handleSubmitForReview() {
+    await handleBlogSave();
+    const result = await updateBlogStatus(id, user.username, "pending");
+    if (result.success) setStatus("pending");
+  }
+
   function addTag(raw) {
     const t = raw.trim().toLowerCase().replace(/,/g, "");
     if (t && !tags.includes(t)) setTags(prev => [...prev, t]);
@@ -268,9 +278,20 @@ export default function CreationTool() {
           <button className="creation-tool__back" onClick={() => navigate("/create")}>← Back</button>
           <div className="creation-tool__toprow-right">
             {saveError && <span className="creation-tool__save-error">{saveError}</span>}
+            <span className={`creation-tool__status creation-tool__status--${status}`}>
+              {status === "draft" && "Draft"}
+              {status === "pending" && "Pending Review"}
+              {status === "published" && "Published"}
+              {status === "rejected" && "Rejected"}
+            </span>
             <button className="creation-tool__delete-btn" onClick={() => setShowDeleteConfirm(true)}>
               Delete Blog
             </button>
+            {(status === "draft" || status === "rejected") && (
+              <button className="creation-tool__submit-btn" onClick={handleSubmitForReview}>
+                Submit for Review
+              </button>
+            )}
             <button className="creation-tool__publish" onClick={handleBlogSave}>
               {saved ? "✓ Saved!" : "Save Blog"}
             </button>
@@ -284,6 +305,14 @@ export default function CreationTool() {
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
+
+        {status === "rejected" && (
+          <div className="creation-tool__rejection-notice">
+            <strong>Rejected by moderator</strong>
+            {rejectionReason && <span> — {rejectionReason}</span>}
+            <span> Edit your blog and resubmit for review.</span>
+          </div>
+        )}
 
         <div className="creation-tool__thumbnail-section">
           {thumbnail && (
