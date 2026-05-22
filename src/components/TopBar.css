@@ -86,6 +86,15 @@
   background: #ffe5d0;
 }
 
+.topbar-discover {
+  background: #fff;
+  color: #e85d04;
+}
+
+.topbar-discover:hover {
+  background: #ffe5d0;
+}
+
 .topbar-create {
   background: #fff;
   color: #e85d04;

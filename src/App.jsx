@@ -8,6 +8,7 @@ import CreationMainPage from "./pages/CreationMainPage";
 import CreationTool from "./pages/CreationTool";
 import SearchPage from "./pages/SearchPage";
 import ModerationPage from "./pages/ModerationPage";
+import ChatPage from "./pages/ChatPage";
 import "./App.css";
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/create" element={<CreationMainPage />} />
           <Route path="/edit/:id" element={<CreationTool />} />
           <Route path="/moderation" element={<ModerationPage />} />
+          <Route path="/chat" element={<ChatPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

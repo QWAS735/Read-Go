@@ -31,6 +31,9 @@ export default function TopBar() {
                   Moderation
                 </button>
               )}
+              <button className="topbar-btn topbar-discover" onClick={() => navigate("/chat")}>
+                Discover
+              </button>
               <button className="topbar-btn topbar-create" onClick={() => navigate("/create")}>
                 Create
               </button>
@@ -39,9 +42,14 @@ export default function TopBar() {
               </button>
             </>
           ) : (
-            <button className="topbar-btn topbar-signin" onClick={() => setShowModal(true)}>
-              Sign In
-            </button>
+            <>
+              <button className="topbar-btn topbar-discover" onClick={() => navigate("/chat")}>
+                Discover
+              </button>
+              <button className="topbar-btn topbar-signin" onClick={() => setShowModal(true)}>
+                Sign In
+              </button>
+            </>
           )}
         </div>
       </header>
