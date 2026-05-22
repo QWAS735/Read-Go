@@ -134,7 +134,7 @@ export default function BlogPage() {
 
         <CommentSection blogId={id} initialComments={blog.comments} />
 
-        {user?.username === "Admin" && (
+        {["Admin", "Moderator"].includes(user?.username) && (
           <div className="blog-page__admin-bar">
             {!confirmDelete ? (
               <button className="blog-page__admin-delete" onClick={() => setConfirmDelete(true)}>
