@@ -224,7 +224,7 @@ export default function CreationTool() {
   }
 
   async function handleBlogSave() {
-    if (!blog) return;
+    if (!blog) return false;
     const updated = { ...blog, title: title || "Untitled Blog", thumbnail, paragraphs, tags };
     try {
       await saveBlog(updated);
@@ -232,8 +232,10 @@ export default function CreationTool() {
       setSaved(true);
       setSaveError("");
       setTimeout(() => setSaved(false), 2000);
+      return true;
     } catch {
       setSaveError("Save failed. Try smaller images.");
+      return false;
     }
   }
 
@@ -243,9 +245,18 @@ export default function CreationTool() {
   }
 
   async function handleSubmitForReview() {
-    await handleBlogSave();
-    const result = await updateBlogStatus(id, user.username, "pending");
-    if (result.success) setStatus("pending");
+    const ok = await handleBlogSave();
+    if (!ok) return;
+    try {
+      const result = await updateBlogStatus(id, user.username, "pending");
+      if (result.success) {
+        setStatus("pending");
+      } else {
+        setSaveError(result.error || "Could not submit for review. Please try again.");
+      }
+    } catch {
+      setSaveError("Could not submit for review. Please try again.");
+    }
   }
 
   function addTag(raw) {
